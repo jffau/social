@@ -28,7 +28,7 @@ app.post('/screams', (req, res) => {
   const newScream = {
     body: body,
     userHandle: userHandle,
-    createdAt: admin.firestore.Timestamp.fromDate(new Date())
+    createdAt: new Date().toISOString()
   };
 
   admin
