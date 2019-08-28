@@ -1,34 +1,29 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
+const express = require('express');
 
+const app = express();
 admin.initializeApp();
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  response.send('Hello from Firebase!');
-});
-
-exports.getScreams = functions.https.onRequest((request, response) => {
+app.get('/screams', (req, res) => {
   admin
     .firestore()
     .collection(`screams`)
     .get()
     .then(data => {
       let screams = [];
-      data.forEach(document => {
-        screams.push(document.data());
+      data.forEach(doc => {
+        screams.push({
+          screamId: doc.id,
+          ...doc.data()
+        });
       });
-      return response.json(screams);
+      return res.json(screams);
     })
     .catch(err => console.error(err));
 });
-
-exports.createScreams = functions.https.onRequest((request, response) => {
-  if (request.method !== 'POST') {
-    return response.staus(400).json({ error: 'HTTP method not allowed' });
-  }
-  const { body, userHandle } = request.body;
+app.post('/screams', (req, res) => {
+  const { body, userHandle } = req.body;
   const newScream = {
     body: body,
     userHandle: userHandle,
@@ -40,10 +35,13 @@ exports.createScreams = functions.https.onRequest((request, response) => {
     .collection(`screams`)
     .add(newScream)
     .then(doc => {
-      response.json({ message: `document ${doc.id} created successfully` });
+      res.json({ message: `document ${doc.id} created successfully` });
     })
     .catch(err => {
       response.status(500).json({ error: `Something went wrong` });
       console.error(err);
     });
 });
+
+// https://example.com/api/...:
+exports.api = functions.https.onRequest(app);
