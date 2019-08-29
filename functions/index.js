@@ -1,12 +1,13 @@
+require('dotenv').config({ path: __dirname + '/.env' });
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const express = require('express');
 const firebase = require('firebase');
+
 const app = express();
 admin.initializeApp();
-
 const firebaseConfig = {
-  apiKey: 'AIzaSyDFqd2Qjs4Csf6CMc6wKONa0MNAv88DKn4',
+  apiKey: process.env.FIREBASE_API,
   authDomain: 'socialape-8fb19.firebaseapp.com',
   databaseURL: 'https://socialape-8fb19.firebaseio.com',
   projectId: 'socialape-8fb19',
@@ -34,6 +35,7 @@ app.get('/screams', (req, res) => {
     })
     .catch(err => console.error(err));
 });
+
 app.post('/screams', (req, res) => {
   const { body, userHandle } = req.body;
   const newScream = {
