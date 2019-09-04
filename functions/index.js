@@ -19,6 +19,42 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// middleware to authenticate validate if logged in
+const FBAuth = (req, res, next) => {
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(decodedToken => {
+      console.log(decodedToken);
+      req.user = decodedToken;
+      return db
+        .collection('users')
+        .where('userId', '==', req.user.uid)
+        .limit(1)
+        .get();
+    })
+    .then(data => {
+      console.log(data);
+      req.user.handle = data.docs[0].data().handle;
+      return next();
+    })
+    .catch(err => {
+      console.error('Error while verifying token', err);
+      return res.status(403).json(err);
+    });
+};
+
+// get all screams
 app.get('/screams', (req, res) => {
   db.collection(`screams`)
     .orderBy(`createdAt`, `desc`)
@@ -36,11 +72,12 @@ app.get('/screams', (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.post('/screams', (req, res) => {
-  const { body, userHandle } = req.body;
+// post one scream
+app.post('/screams', FBAuth, (req, res) => {
+  const { body } = req.body;
   const newScream = {
     body,
-    userHandle,
+    userHandle: req.user.handle,
     createdAt: new Date().toISOString()
   };
 
@@ -68,6 +105,7 @@ const isEmail = email => {
     return false;
   }
 };
+
 // signup route
 app.post('/signup', (req, res) => {
   const { email, password, confirmPassword, handle } = req.body;
