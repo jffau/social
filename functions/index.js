@@ -14,7 +14,7 @@ app.post('/screams', FBAuth, postOneScream);
 // user routes
 app.post('/signup', signup);
 app.post('/login', login);
-app.post('/user/image', uploadImage);
+app.post('/user/image', FBAuth, uploadImage);
 
 // https://example.com/api/...:
 exports.api = functions.https.onRequest(app);
