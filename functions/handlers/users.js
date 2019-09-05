@@ -1,6 +1,6 @@
-const { db } = require('../util/admin');
+const { db, admin } = require('../util/admin');
 const firebase = require('firebase');
-
+const config = require('../util/config');
 const { validateSignupData, validateLoginData } = require('../util/validators');
 
 exports.signup = (req, res) => {
@@ -15,6 +15,8 @@ exports.signup = (req, res) => {
   const { valid, errors } = validateSignupData(newUser);
 
   if (!valid) return res.status(400).json(errors);
+
+  const noImg = 'no-img.png';
 
   let token, userId;
   db.doc(`/users/${newUser.handle}`)
@@ -41,6 +43,7 @@ exports.signup = (req, res) => {
         handle: newUser.handle,
         email: newUser.email,
         createdAt: new Date().toISOString(),
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
         userId
       };
       return db.doc(`/users/${newUser.handle}`).set(userCredentials);
@@ -102,7 +105,7 @@ exports.uploadImage = (req, res) => {
   let imageToBeUploaded = {};
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     // index of last item in split array
-    console.table(fieldname, filename, mimetype);
+    console.log(fieldname, filename, mimetype);
     const imageExtension = filename.split('.')[filename.split('.').length - 1];
     imageFileName = `${Math.round(
       Math.random() * 100000000
