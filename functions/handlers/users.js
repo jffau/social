@@ -1,7 +1,11 @@
 const { db, admin } = require('../util/admin');
 const firebase = require('firebase');
 const config = require('../util/config');
-const { validateSignupData, validateLoginData } = require('../util/validators');
+const {
+  validateSignupData,
+  validateLoginData,
+  formatUserDetails
+} = require('../util/validators');
 
 exports.signup = (req, res) => {
   const { email, password, confirmPassword, handle } = req.body;
@@ -13,12 +17,10 @@ exports.signup = (req, res) => {
   };
 
   const { valid, errors } = validateSignupData(newUser);
-
   if (!valid) return res.status(400).json(errors);
-
   const noImg = 'no-img.png';
-
   let token, userId;
+
   db.doc(`/users/${newUser.handle}`)
     .get()
     .then(doc => {
@@ -90,6 +92,19 @@ exports.login = (req, res) => {
       } else {
         return res.status(500).json({ error: err.code });
       }
+    });
+};
+
+exports.addUserDetails = (req, res) => {
+  let userDetails = formatUserDetails(req.body);
+  db.doc(`users/${req.user.handle}`)
+    .update(userDetails)
+    .then(() => {
+      return res.json({ message: 'Details added successfully' });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
     });
 };
 
