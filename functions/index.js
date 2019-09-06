@@ -6,7 +6,8 @@ const {
   signup,
   login,
   addUserDetails,
-  uploadImage
+  uploadImage,
+  getAuthenticatedUser
 } = require('./handlers/users');
 const FBAuth = require('./util/FBAuth');
 
@@ -19,6 +20,7 @@ app.post('/screams', FBAuth, postOneScream);
 // user routes
 app.post('/signup', signup);
 app.post('/login', login);
+app.get('/user', FBAuth, getAuthenticatedUser);
 app.post('/user/', FBAuth, addUserDetails);
 app.post('/user/image', FBAuth, uploadImage);
 
