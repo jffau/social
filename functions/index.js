@@ -27,8 +27,8 @@ app.get('/screams', getAllScreams);
 app.post('/screams', FBAuth, postOneScream);
 app.get('/screams/:screamId', getScream);
 app.post('/screams/:screamId/comment', FBAuth, commentOnScream);
-app.post('/screams/:screamId/like', FBAuth, likeScream);
-app.post('/screams/:screamId/unlike', FBAuth, unlikeScream);
+app.get('/screams/:screamId/like', FBAuth, likeScream);
+app.get('/screams/:screamId/unlike', FBAuth, unlikeScream);
 
 // user routes
 app.post('/signup', signup);
