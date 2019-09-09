@@ -124,9 +124,9 @@ exports.likeScream = (req, res) => {
       // if not liked:
       if (data.empty) {
         return db
-          .collections('likes')
+          .collection('likes')
           .add({
-            screamId: req.params.screamIdm,
+            screamId: req.params.screamId,
             userHandle: req.user.handle
           })
           .then(() => {
