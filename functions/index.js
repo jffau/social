@@ -6,7 +6,9 @@ const {
   getAllScreams,
   postOneScream,
   getScream,
-  commentOnScream
+  commentOnScream,
+  likeScream,
+  unlikeScream
 } = require('./handlers/screams');
 const {
   signup,
@@ -25,6 +27,8 @@ app.get('/screams', getAllScreams);
 app.post('/screams', FBAuth, postOneScream);
 app.get('/screams/:screamId', getScream);
 app.post('/screams/:screamId/comment', FBAuth, commentOnScream);
+app.post('/screams/:screamId/like', FBAuth, likeScream);
+app.post('/screams/:screamId/unlike', FBAuth, unlikeScream);
 
 // user routes
 app.post('/signup', signup);
