@@ -8,7 +8,8 @@ const {
   getScream,
   commentOnScream,
   likeScream,
-  unlikeScream
+  unlikeScream,
+  deleteScream
 } = require('./handlers/screams');
 const {
   signup,
@@ -29,6 +30,7 @@ app.get('/screams/:screamId', getScream);
 app.post('/screams/:screamId/comment', FBAuth, commentOnScream);
 app.get('/screams/:screamId/like', FBAuth, likeScream);
 app.get('/screams/:screamId/unlike', FBAuth, unlikeScream);
+app.delete('/screams/:screamId', FBAuth, deleteScream);
 
 // user routes
 app.post('/signup', signup);
