@@ -176,23 +176,23 @@ exports.unlikeScream = (req, res) => {
     .then(data => {
       // if not liked:
       if (data.empty) {
-        return res.status(400).json({ error: 'Scream is not liked already' });
+        return res.status(400).json({ error: 'Scream not liked' });
       } else {
         return db
-          .doc(`/likes/${data.docs[0].data().id}`)
+          .doc(`/likes/${data.docs[0].id}`)
           .delete()
           .then(() => {
             screamData.likeCount--;
             return screamDocument.update({ likeCount: screamData.likeCount });
           })
           .then(() => {
-            return res.json(ScreamData);
+            res.json(screamData);
           });
       }
     })
     .catch(err => {
       console.error(err);
-      return res.status(500).json({ error: err.code });
+      res.status(500).json({ error: err.code });
     });
 };
 
