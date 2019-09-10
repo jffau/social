@@ -42,7 +42,7 @@ app.get('/user', FBAuth, getAuthenticatedUser);
 app.post('/user/', FBAuth, addUserDetails);
 app.post('/user/image', FBAuth, uploadImage);
 app.get('/user/:handle', getAnyUser);
-app.post('/notifications', markNotifications);
+app.post('/notifications', FBAuth, markNotifications);
 
 // https://example.com/api/...:
 exports.api = functions.https.onRequest(app);
