@@ -1,6 +1,7 @@
 require('dotenv').config({ path: __dirname + '/.env' });
 const functions = require('firebase-functions');
 const express = require('express');
+const { db } = require('./util/admin');
 
 const {
   getAllScreams,
@@ -41,3 +42,29 @@ app.post('/user/image', FBAuth, uploadImage);
 
 // https://example.com/api/...:
 exports.api = functions.https.onRequest(app);
+
+// database trigger
+exports.createNotificationOnLike = functions
+  .region('europe-west1')
+  .firestore.document('likes/{id}')
+  .onCreate(snapshot => {
+    return db
+      .doc(`/screams/${snapshot.data().screamId}`)
+      .get()
+      .then(doc => {
+        if (
+          doc.exists &&
+          doc.data().userHandle !== snapshot.data().userHandle
+        ) {
+          return db.doc(`/notifications/${snapshot.id}`).set({
+            createdAt: new Date().toISOString(),
+            recipient: doc.data().userHandle,
+            sender: snapshot.data().userHandle,
+            type: 'like',
+            read: false,
+            screamId: doc.id
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  });
