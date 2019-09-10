@@ -17,7 +17,9 @@ const {
   login,
   addUserDetails,
   uploadImage,
-  getAuthenticatedUser
+  getAuthenticatedUser,
+  getAnyUser,
+  markNotifications
 } = require('./handlers/users');
 
 const FBAuth = require('./util/FBAuth');
@@ -39,6 +41,8 @@ app.post('/login', login);
 app.get('/user', FBAuth, getAuthenticatedUser);
 app.post('/user/', FBAuth, addUserDetails);
 app.post('/user/image', FBAuth, uploadImage);
+app.get('/user/:handle', getAnyUser);
+app.post('/notifications', markNotifications);
 
 // https://example.com/api/...:
 exports.api = functions.https.onRequest(app);
