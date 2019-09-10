@@ -22,6 +22,7 @@ exports.postOneScream = (req, res) => {
   const newScream = {
     body,
     userHandle: req.user.handle,
+    userImage: req.user.imageUrl,
     createdAt: new Date().toISOString()
   };
 
