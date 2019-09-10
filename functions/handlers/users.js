@@ -260,4 +260,21 @@ exports.getAnyUser = (req, res) => {
     });
 };
 
-exports.markNotifications = (req, res) => {};
+exports.markNotifications = (req, res) => {
+  // batch write (updating multiple documents):
+  let batch = db.batch();
+  req.body.forEach(notificationId => {
+    // document reference:
+    const notification = db.doc(`/notifications/${notificationId}`);
+    batch.update(notification, { read: true });
+  });
+  batch
+    .commit()
+    .then(() => {
+      return res.json({ message: 'Notifications marked read' });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
