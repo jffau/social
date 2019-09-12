@@ -5,10 +5,16 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+
 const styles = {
   card: {
-    display: 'flex'
-  }
+    display: 'flex',
+    marginBottom: 20
+  },
+  image: {
+    minWidth: 200
+  },
+  content: { padding: 25, objectFit: 'cover' }
 };
 export class Post extends Component {
   render() {
@@ -25,9 +31,13 @@ export class Post extends Component {
       }
     } = this.props;
     return (
-      <Card>
-        <CardMedia image={userImage} title="Profile image"></CardMedia>
-        <CardContent>
+      <Card className={classes.card}>
+        <CardMedia
+          image={userImage}
+          title="Profile image"
+          className={classes.image}
+        ></CardMedia>
+        <CardContent className={classes.content}>
           <Typography
             variant="h5"
             component={Link}
