@@ -87,13 +87,11 @@ exports.login = (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      if (err.code === 'auth/wrong-password') {
-        return res
-          .status(403)
-          .json({ general: 'Wrong credentials, please try again' });
-      } else {
-        return res.status(500).json({ error: err.code });
-      }
+      // auth/wrong-password
+      // auth/user-not-user
+      return res
+        .status(403)
+        .json({ general: 'Wrong credentials, please try again' });
     });
 };
 
@@ -106,7 +104,7 @@ exports.addUserDetails = (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      return res.status(500).json({ error: err.code });
+      return res.status(500).json({ general: err.code });
     });
 };
 
