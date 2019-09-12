@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 // @m-ui
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -19,7 +20,17 @@ const styles = {
     margin: '20px auto 20px auto'
   },
   textField: {
-    margin: '30px'
+    margin: '20px'
+  },
+  pageTitle: {
+    margin: '20px auto 20px auto'
+  },
+  button: {
+    marginTop: '20px'
+  },
+  customError: {
+    color: 'red',
+    fontSize: '0.8rem'
   }
 };
 
@@ -34,7 +45,33 @@ export class Login extends Component {
     };
   }
   handleSubmit = event => {
+    event.preventDefault();
     console.log('submit');
+    this.setState({
+      loading: true
+    });
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    axios
+      .post(
+        'https://us-central1-socialape-8fb19.cloudfunctions.net/api/login',
+        userData
+      )
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          loading: false
+        });
+        this.props.history.push('/');
+      })
+      .catch(err => {
+        this.setState({
+          errors: err.response.data,
+          loading: false
+        });
+      });
   };
   handleChange = event => {
     this.setState({
@@ -44,6 +81,7 @@ export class Login extends Component {
 
   render() {
     const { classes } = this.props;
+    const { errors } = this.state;
     return (
       <Grid container className={classes.form}>
         <Grid item sm />
@@ -60,6 +98,8 @@ export class Login extends Component {
               label="Email"
               className={classes.textField}
               value={this.state.email}
+              helperText={errors.email}
+              error={errors.email ? true : false}
               onChange={this.handleChange}
               fullWidth
             />
@@ -70,9 +110,24 @@ export class Login extends Component {
               label="Password"
               className={classes.textField}
               value={this.state.password}
+              helperText={errors.password}
+              error={errors.password ? true : false}
               onChange={this.handleChange}
               fullWidth
             />
+            {errors.general && (
+              <Typography variant="body2" className={classes.customError}>
+                {errors.general}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Login
+            </Button>
           </form>
         </Grid>
         <Grid item sm />
