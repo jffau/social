@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -30,7 +31,11 @@ const styles = {
   },
   customError: {
     color: 'red',
-    fontSize: '0.8rem'
+    fontSize: '0.8rem',
+    marginTop: 10
+  },
+  progress: {
+    position: 'absolute'
   }
 };
 
@@ -81,7 +86,7 @@ export class Login extends Component {
 
   render() {
     const { classes } = this.props;
-    const { errors } = this.state;
+    const { errors, loading } = this.state;
     return (
       <Grid container className={classes.form}>
         <Grid item sm />
@@ -125,9 +130,17 @@ export class Login extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
+              disabled={loading}
             >
+              {loading && (
+                <CircularProgress size={30} className={classes.progress} />
+              )}
               Login
             </Button>
+            <br />
+            <small>
+              don't have an account yet? signup <Link to="/signup">here</Link>!
+            </small>
           </form>
         </Grid>
         <Grid item sm />
