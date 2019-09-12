@@ -2,6 +2,7 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const functions = require('firebase-functions');
 const express = require('express');
 const { db } = require('./util/admin');
+const cors = require('cors');
 
 const {
   getAllScreams,
@@ -25,6 +26,7 @@ const {
 const FBAuth = require('./util/FBAuth');
 
 const app = express();
+app.use(cors());
 
 // scream routes
 app.get('/screams', getAllScreams);
