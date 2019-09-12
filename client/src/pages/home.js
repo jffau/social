@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
+import Post from '../components/Post';
 export class Home extends Component {
   state = {
     posts: null
@@ -8,8 +9,9 @@ export class Home extends Component {
 
   componentDidMount() {
     axios
-      .get('/screams')
+      .get('https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams')
       .then(res => {
+        console.log(res.data);
         this.setState({
           posts: res.data
         });
@@ -21,7 +23,7 @@ export class Home extends Component {
 
   render() {
     let recentPostsMarkup = this.state.posts ? (
-      this.state.posts.map(post => <p> {post.body}</p>)
+      this.state.posts.map(post => <Post key={post.screamId} post={post} />)
     ) : (
       <p>Loading...</p>
     );
