@@ -9,16 +9,12 @@ export const loginUser = (userData, history) => dispatch => {
       userData
     )
     .then(res => {
-      console.log(res.data);
-      this.setState({
-        loading: false
-      });
       const FBIdToken = `Bearer ${res.data.token}`;
       localStorage.setItem('FBIdToken', FBIdToken);
       axios.defaults.headers.common['Authorization'] = FBIdToken;
       dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
-      this.props.history.push('/');
+      history.push('/');
     })
     .catch(err => {
       dispatch({
@@ -30,14 +26,12 @@ export const loginUser = (userData, history) => dispatch => {
 
 export const getUserData = () => dispatch => {
   axios
-    .get('https://us-central1-socialape-8fb19.cloudfunctions.net/api/user')
+    .get('/user')
     .then(res => {
       dispatch({
         type: SET_USER,
         payload: res.data
       });
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 };
