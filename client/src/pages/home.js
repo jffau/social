@@ -11,7 +11,6 @@ export class Home extends Component {
     axios
       .get('https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams')
       .then(res => {
-        console.log(res.data);
         this.setState({
           posts: res.data
         });
