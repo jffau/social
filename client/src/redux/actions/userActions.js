@@ -1,4 +1,10 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
+import {
+  SET_USER,
+  SET_ERRORS,
+  CLEAR_ERRORS,
+  LOADING_UI,
+  SET_UNAUTHENTICATED
+} from '../types';
 import axios from 'axios';
 
 export const loginUser = (userData, history) => dispatch => {
@@ -51,7 +57,7 @@ const setAuthHeader = token => {
 
 export const getUserData = () => dispatch => {
   axios
-    .get('/user')
+    .get('https://us-central1-socialape-8fb19.cloudfunctions.net/api/user')
     .then(res => {
       dispatch({
         type: SET_USER,
@@ -59,4 +65,10 @@ export const getUserData = () => dispatch => {
       });
     })
     .catch(err => console.log(err));
+};
+
+export const logoutUser = () => dispatch => {
+  localStorage.removeItem('FBIdToken');
+  delete axios.defaults.headers.common['Authorization'];
+  dispatch({ type: SET_UNAUTHENTICATED });
 };
