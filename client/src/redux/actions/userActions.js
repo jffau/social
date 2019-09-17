@@ -3,6 +3,7 @@ import {
   SET_ERRORS,
   CLEAR_ERRORS,
   LOADING_UI,
+  LOADING_USER,
   SET_UNAUTHENTICATED
 } from '../types';
 import axios from 'axios';
@@ -56,6 +57,7 @@ const setAuthHeader = token => {
 };
 
 export const getUserData = () => dispatch => {
+  dispatch({ type: LOADING_USER });
   axios
     .get('https://us-central1-socialape-8fb19.cloudfunctions.net/api/user')
     .then(res => {
