@@ -102,7 +102,7 @@ export class Login extends Component {
               disabled={loading}
             >
               {loading && (
-                <CircularProgress size={30} className={classes.progress} />
+                <CircularProgress` size={30} className={classes.progress} />
               )}
               Login
             </Button>
