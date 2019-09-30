@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+// Redux
+import { connect } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 export class Navbar extends Component {
   render() {
+    const { authenticated } = this.props;
     return (
       <AppBar>
         <Toolbar className="nav-container">
@@ -24,4 +28,12 @@ export class Navbar extends Component {
   }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+  authenticated: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  authenticated: state.user.authenticated
+});
+
+export default connect(mapStateToProps)(Navbar);
