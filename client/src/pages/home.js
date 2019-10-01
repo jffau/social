@@ -39,7 +39,7 @@ export class Home extends Component {
 }
 
 Home.propTypes = {
-  getScreams: PropTypes.func.isRequired,
+  getPosts: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired
 };
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
+import MyButton from '../util/MyButton';
 
 // M-UI
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -10,6 +11,11 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+
+// Icons
+import ChatIcon from '@material-ui/icons/Chat';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // redux
 import { connect } from 'react-redux';
@@ -26,6 +32,22 @@ const styles = {
   content: { padding: 25, objectFit: 'cover' }
 };
 export class Post extends Component {
+  likedPost = () => {
+    if (
+      this.props.user.likes &&
+      this.props.user.likes.find(
+        like => like.screamId === this.props.post.screamId
+      )
+    )
+      return true;
+    else return false;
+  };
+  likePost = () => {
+    this.props.likePost(this.props.post.screamId);
+  };
+  unlikePost = () => {
+    this.props.unlikePost(this.props.post.screamId);
+  };
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -38,8 +60,26 @@ export class Post extends Component {
         screamId,
         likeCount,
         commentCount
-      }
+      },
+      user: { authenticated }
     } = this.props;
+
+    const likeButton = !authenticated ? (
+      <MyButton tip="Like">
+        <Link to="/login">
+          <FavoriteBorder color="primary" />
+        </Link>
+      </MyButton>
+    ) : this.likedPost() ? (
+      <MyButton tip="Undo like" onClick={this.unlikePost}>
+        <FavoriteIcon color="primary" />
+      </MyButton>
+    ) : (
+      <MyButton tip="Like" onClick={this.likePost}>
+        <FavoriteBorder color="primary" />
+      </MyButton>
+    );
+
     return (
       <Card className={classes.card}>
         <CardMedia
@@ -60,6 +100,11 @@ export class Post extends Component {
             {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{body}</Typography>
+          {likeButton} <span>{likeCount} Likes</span>
+          <MyButton tip="comments">
+            <ChatIcon color="primary" />
+          </MyButton>
+          <span>{commentCount} comments</span>
         </CardContent>
       </Card>
     );
@@ -74,9 +119,9 @@ Post.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  user: state.user;
-};
+const mapStateToProps = state => ({
+  user: state.user
+});
 
 const mapActionsToProps = {
   likePost,
