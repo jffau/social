@@ -19,3 +19,31 @@ export const getPosts = () => dispatch => {
       });
     });
 };
+
+export const likePost = screamId => dispatch => {
+  axios
+    .get(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/${screamId}/like`
+    )
+    .then(res => {
+      dispatch({
+        type: LIKE_POST,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+export const unlikePost = screamId => dispatch => {
+  axios
+    .get(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/${screamId}/unlike`
+    )
+    .then(res => {
+      dispatch({
+        type: UNLIKE_POST,
+        payload: res.data
+      });
+    })
+    .catch(err => console.log(err));
+};
