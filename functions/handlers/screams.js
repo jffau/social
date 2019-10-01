@@ -23,7 +23,9 @@ exports.postOneScream = (req, res) => {
     body,
     userHandle: req.user.handle,
     userImage: req.user.imageUrl,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    likeCount: 0,
+    commentCount: 0
   };
 
   db.collection(`screams`)
