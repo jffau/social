@@ -10,8 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+
 // Icons
 import EditIcon from '@material-ui/icons/Edit';
 import LocationOn from '@material-ui/icons/LocationOn';
