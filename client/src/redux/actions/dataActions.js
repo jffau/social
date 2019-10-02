@@ -1,4 +1,10 @@
-import { SET_POSTS, LOADING_DATA, LIKE_POST, UNLIKE_POST } from '../types';
+import {
+  SET_POSTS,
+  LOADING_DATA,
+  LIKE_POST,
+  UNLIKE_POST,
+  DELETE_POST
+} from '../types';
 import axios from 'axios';
 
 // GET ALL POSTS:
@@ -44,6 +50,17 @@ export const unlikePost = screamId => dispatch => {
         type: UNLIKE_POST,
         payload: res.data
       });
+    })
+    .catch(err => console.log(err));
+};
+
+export const deletePost = screamId => dispatch => {
+  axios
+    .delete(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/${screamId}/`
+    )
+    .then(() => {
+      dispatch({ type: DELETE_POST, payload: screamId });
     })
     .catch(err => console.log(err));
 };

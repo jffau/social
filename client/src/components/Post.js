@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
-
+import DeletePost from './DeletePost';
 // M-UI
 import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '@material-ui/core/Card';
@@ -24,7 +24,8 @@ import { likePost, unlikePost } from '../redux/actions/dataActions';
 const styles = {
   card: {
     display: 'flex',
-    marginBottom: 20
+    marginBottom: 20,
+    position: 'relative'
   },
   image: {
     minWidth: 200
@@ -61,7 +62,10 @@ export class Post extends Component {
         likeCount,
         commentCount
       },
-      user: { authenticated }
+      user: {
+        authenticated,
+        credentials: { handle }
+      }
     } = this.props;
 
     const likeButton = !authenticated ? (
@@ -79,6 +83,10 @@ export class Post extends Component {
         <FavoriteBorder color="primary" />
       </MyButton>
     );
+    const deleteButton =
+      authenticated && userHandle === handle ? (
+        <DeletePost screamId={screamId} />
+      ) : null;
 
     return (
       <Card className={classes.card}>
@@ -96,6 +104,7 @@ export class Post extends Component {
           >
             {userHandle}
           </Typography>
+          {deleteButton}
           <Typography variant="body2" color="textSecondary">
             {dayjs(createdAt).fromNow()}
           </Typography>
