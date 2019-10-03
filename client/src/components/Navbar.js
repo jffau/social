@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
-
+import CreatePost from './CreatePost';
 // Redux
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions/userActions';
@@ -29,9 +29,7 @@ export class Navbar extends Component {
         <Toolbar className="nav-container">
           {authenticated ? (
             <>
-              <MyButton tip="Create a new Post!">
-                <AddIcon />
-              </MyButton>
+              <CreatePost />
               <Link to="/">
                 <MyButton tip="Home">
                   <HomeIcon />

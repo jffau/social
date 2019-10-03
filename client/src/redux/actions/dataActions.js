@@ -3,7 +3,11 @@ import {
   LOADING_DATA,
   LIKE_POST,
   UNLIKE_POST,
-  DELETE_POST
+  DELETE_POST,
+  CREATE_POST,
+  SET_ERRORS,
+  CLEAR_ERRORS,
+  LOADING_UI
 } from '../types';
 import axios from 'axios';
 
@@ -63,4 +67,27 @@ export const deletePost = screamId => dispatch => {
       dispatch({ type: DELETE_POST, payload: screamId });
     })
     .catch(err => console.log(err));
+};
+
+export const createPost = newPost => dispatch => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post(
+      'https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/',
+      newPost
+    )
+    .then(res => {
+      dispatch({
+        type: CREATE_POST,
+        payload: res.data
+      });
+      dispatch({ type: CLEAR_ERRORS });
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    });
+  getPosts();
 };
