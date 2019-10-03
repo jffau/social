@@ -13,20 +13,25 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 // Redux stuff
 import { connect } from 'react-redux';
-import { createPost, getPosts } from '../redux/actions/dataActions';
+import {
+  createPost,
+  clearErrors,
+  getPosts
+} from '../redux/actions/dataActions';
 
 const styles = theme => ({
   submitButton: {
     position: 'relative',
-    marginTop: '30px'
+    float: 'right',
+    marginTop: 10
   },
   progressSpinner: {
     position: 'absolute'
   },
   closeButton: {
     position: 'absolute',
-    left: '90%',
-    top: '10%'
+    left: '91%',
+    top: '6%'
   }
 });
 
@@ -43,14 +48,14 @@ class CreatePost extends Component {
       });
     }
     if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: '' });
-      this.handleClose();
+      this.setState({ body: '', open: false, errors: {} });
     }
   }
   handleOpen = () => {
     this.setState({ open: true });
   };
   handleClose = () => {
+    this.props.clearErrors();
     this.setState({ open: false, errors: {} });
   };
   handleChange = event => {
@@ -59,7 +64,7 @@ class CreatePost extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.createPost({ body: this.state.body });
-    this.props.getPosts();
+    // this.props.getPosts();
   };
   render() {
     const { errors } = this.state;
@@ -68,7 +73,7 @@ class CreatePost extends Component {
       UI: { loading }
     } = this.props;
     return (
-      <>
+      <Fragment>
         <MyButton onClick={this.handleOpen} tip="Create a new post">
           <AddIcon />
         </MyButton>
@@ -119,14 +124,14 @@ class CreatePost extends Component {
             </form>
           </DialogContent>
         </Dialog>
-      </>
+      </Fragment>
     );
   }
 }
 
 CreatePost.propTypes = {
   createPost: PropTypes.func.isRequired,
-  getPosts: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired
 };
 
@@ -136,5 +141,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPost, getPosts }
+  { createPost, clearErrors, getPosts }
 )(withStyles(styles)(CreatePost));
