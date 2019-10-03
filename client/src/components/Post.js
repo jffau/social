@@ -5,6 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
 import DeletePost from './DeletePost';
+import PostDialog from './PostDialog';
 // M-UI
 import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '@material-ui/core/Card';
@@ -13,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 // Icons
-import ChatIcon from '@material-ui/icons/Chat';
+
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
@@ -110,9 +111,7 @@ export class Post extends Component {
           </Typography>
           <Typography variant="body1">{body}</Typography>
           {likeButton} <span>{likeCount} Likes</span>
-          <MyButton tip="comments">
-            <ChatIcon color="primary" />
-          </MyButton>
+          <PostDialog screamId={screamId} userHandle={userHandle} />
           <span>{commentCount} comments</span>
         </CardContent>
       </Card>
