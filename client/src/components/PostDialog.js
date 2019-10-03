@@ -95,7 +95,7 @@ class PostDialog extends Component {
       <>
         <MyButton
           onClick={this.handleOpen}
-          tip="Expand scream"
+          tip="Comments/ Details"
           tipClassName={classes.expandButton}
         >
           <ChatIcon color="primary" />
