@@ -7,7 +7,9 @@ import {
   CREATE_POST,
   SET_ERRORS,
   CLEAR_ERRORS,
-  LOADING_UI
+  LOADING_UI,
+  SET_POST,
+  STOP_LOADING_UI
 } from '../types';
 import axios from 'axios';
 
@@ -28,6 +30,21 @@ export const getPosts = () => dispatch => {
         payload: []
       });
     });
+};
+export const getPost = screamId => dispatch => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .get(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/${screamId}`
+    )
+    .then(res => {
+      dispatch({
+        type: SET_POST,
+        payload: res.data
+      });
+      dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch(err => console.log(err));
 };
 
 export const likePost = screamId => dispatch => {
@@ -89,5 +106,7 @@ export const createPost = newPost => dispatch => {
         payload: err.response.data
       });
     });
-  getPosts();
+};
+export const clearErrors = () => dispatch => {
+  dispatch({ type: CLEAR_ERRORS });
 };
