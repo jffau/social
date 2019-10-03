@@ -59,6 +59,7 @@ class CreatePost extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.createPost({ body: this.state.body });
+    this.props.getPosts();
   };
   render() {
     const { errors } = this.state;
@@ -125,6 +126,7 @@ class CreatePost extends Component {
 
 CreatePost.propTypes = {
   createPost: PropTypes.func.isRequired,
+  getPosts: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired
 };
 
