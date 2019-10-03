@@ -18,6 +18,9 @@ exports.getAllScreams = (req, res) => {
 };
 
 exports.postOneScream = (req, res) => {
+  if (req.body.body.trim() === '') {
+    return res.status(400).json({ body: 'Body must not be empty' });
+  }
   const { body } = req.body;
   const newScream = {
     body,
@@ -33,7 +36,7 @@ exports.postOneScream = (req, res) => {
     .then(doc => {
       const resScream = newScream;
       resScream.screamId = doc.id;
-      res.json({ resScream });
+      res.json(resScream);
     })
     .catch(err => {
       response.status(500).json({ error: `Something went wrong` });
