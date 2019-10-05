@@ -5,6 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
 import DeletePost from './DeletePost';
+import LikeButton from './LikeButton';
 import PostDialog from './PostDialog';
 // M-UI
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -34,16 +35,6 @@ const styles = {
   content: { padding: 25, objectFit: 'cover' }
 };
 export class Post extends Component {
-  likedPost = () => {
-    if (
-      this.props.user.likes &&
-      this.props.user.likes.find(
-        like => like.screamId === this.props.post.screamId
-      )
-    )
-      return true;
-    else return false;
-  };
   likePost = () => {
     this.props.likePost(this.props.post.screamId);
   };
@@ -69,21 +60,6 @@ export class Post extends Component {
       }
     } = this.props;
 
-    const likeButton = !authenticated ? (
-      <MyButton tip="Like">
-        <Link to="/login">
-          <FavoriteBorder color="primary" />
-        </Link>
-      </MyButton>
-    ) : this.likedPost() ? (
-      <MyButton tip="Undo like" onClick={this.unlikePost}>
-        <FavoriteIcon color="primary" />
-      </MyButton>
-    ) : (
-      <MyButton tip="Like" onClick={this.likePost}>
-        <FavoriteBorder color="primary" />
-      </MyButton>
-    );
     const deleteButton =
       authenticated && userHandle === handle ? (
         <DeletePost screamId={screamId} />
@@ -110,7 +86,8 @@ export class Post extends Component {
             {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{body}</Typography>
-          {likeButton} <span>{likeCount} Likes</span>
+          <LikeButton screamId={screamId} />
+          <span>{likeCount} Likes</span>
           <PostDialog screamId={screamId} userHandle={userHandle} />
           <span>{commentCount} comments</span>
         </CardContent>
