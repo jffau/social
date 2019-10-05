@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 import DeletePost from './DeletePost';
 import LikeButton from './LikeButton';
 import PostDialog from './PostDialog';
@@ -21,7 +21,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // redux
 import { connect } from 'react-redux';
-import { likePost, unlikePost } from '../redux/actions/dataActions';
+import { likePost, unlikePost } from '../../redux/actions/dataActions';
 
 const styles = {
   card: {

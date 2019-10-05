@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import MyButton from '../util/MyButton';
-import CreatePost from './CreatePost';
+import MyButton from '../../util/MyButton';
+import CreatePost from '../post/CreatePost';
 // Redux
 import { connect } from 'react-redux';
-import { logoutUser } from '../redux/actions/userActions';
+import { logoutUser } from '../../redux/actions/userActions';
 
 //MUI
 import AppBar from '@material-ui/core/AppBar';
