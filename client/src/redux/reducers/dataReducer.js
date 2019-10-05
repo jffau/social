@@ -34,6 +34,9 @@ export default function(state = initialState, action) {
         scream => scream.screamId === action.payload.screamId
       );
       state.posts[index] = action.payload;
+      if (state.post.screamId === action.payload.screamId) {
+        state.post = action.payload;
+      }
       return {
         ...state
       };
