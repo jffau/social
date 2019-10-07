@@ -135,7 +135,7 @@ export const getUserData = userHandle => dispatch => {
     .then(res => {
       dispatch({
         type: SET_POSTS,
-        payload: res.data.posts
+        payload: res.data.screams
       });
     })
     .catch(err => {
