@@ -9,7 +9,8 @@ import {
   CLEAR_ERRORS,
   LOADING_UI,
   SET_POST,
-  STOP_LOADING_UI
+  STOP_LOADING_UI,
+  SUBMIT_COMMENT
 } from '../types';
 import axios from 'axios';
 
@@ -107,6 +108,25 @@ export const createPost = newPost => dispatch => {
       });
     });
 };
+export const submitComment = (screamId, commentData) => dispatch => {
+  axios
+    .post(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/screams/${screamId}/comment`,
+      commentData
+    )
+    .then(res => {
+      dispatch({
+        type: SUBMIT_COMMENT,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch(err => {
+      dispatch({ type: SET_ERRORS, payload: err.response.data });
+    });
+};
+
+// Action Creator:
 export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS });
 };
