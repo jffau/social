@@ -126,6 +126,26 @@ export const submitComment = (screamId, commentData) => dispatch => {
     });
 };
 
+export const getUserData = userHandle => dispatch => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(
+      `https://us-central1-socialape-8fb19.cloudfunctions.net/api/user/${userHandle}`
+    )
+    .then(res => {
+      dispatch({
+        type: SET_POSTS,
+        payload: res.data.posts
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_POSTS,
+        payload: null
+      });
+    });
+};
+
 // Action Creator:
 export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS });
