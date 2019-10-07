@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MyButton from '../../util/MyButton';
 import dayjs from 'dayjs';
-import LikeButton from './LikeButton';
 import { Link } from 'react-router-dom';
+import LikeButton from './LikeButton';
+import Comments from './Comments';
 // Mui
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,10 +22,7 @@ import { connect } from 'react-redux';
 import { getPost } from '../../redux/actions/dataActions';
 
 const styles = theme => ({
-  invisibleSeparator: {
-    border: 'none',
-    margin: 4
-  },
+  ...theme.options,
   profileImage: {
     maxWidth: 200,
     height: 200,
@@ -68,7 +66,8 @@ class PostDialog extends Component {
         likeCount,
         commentCount,
         userImage,
-        userHandle
+        userHandle,
+        comments
       },
       UI: { loading }
     } = this.props;
@@ -100,6 +99,8 @@ class PostDialog extends Component {
           <LikeButton screamId={screamId} />
           <span>{likeCount} likes</span>
         </Grid>
+        <hr className={classes.visibleSeparator} />
+        <Comments comments={comments} />
       </Grid>
     );
     return (
