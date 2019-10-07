@@ -36,7 +36,10 @@ export default function(state = initialState, action) {
       );
       state.posts[index] = action.payload;
       if (state.post.screamId === action.payload.screamId) {
+        // saving comments into a temp variables to prevent post to be overwritten by the payload
+        let tempComments = state.post.comments;
         state.post = action.payload;
+        state.post.comments = tempComments;
       }
       return {
         ...state
