@@ -57,7 +57,11 @@ class PostDialog extends Component {
     this.setState({ open: false });
     this.props.clearErrors();
   };
-
+  componentDidMount() {
+    if (this.props.openDialog) {
+      this.handleOpen();
+    }
+  }
   render() {
     const {
       classes,

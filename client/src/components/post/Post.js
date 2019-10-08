@@ -88,7 +88,11 @@ export class Post extends Component {
           <Typography variant="body1">{body}</Typography>
           <LikeButton screamId={screamId} />
           <span>{likeCount} Likes</span>
-          <PostDialog screamId={screamId} userHandle={userHandle} />
+          <PostDialog
+            screamId={screamId}
+            userHandle={userHandle}
+            openDialog={this.props.openDialog}
+          />
           <span>{commentCount} comments</span>
         </CardContent>
       </Card>
@@ -101,7 +105,8 @@ Post.propTypes = {
   unlikePost: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

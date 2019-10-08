@@ -10,10 +10,13 @@ import { getUserData } from '../redux/actions/dataActions';
 
 class user extends Component {
   state = {
-    profile: null
+    profile: null,
+    idParam: null
   };
   componentDidMount() {
-    const handle = this.props.match.params.handle;
+    const { handle, screamId } = this.props.match.params;
+
+    if (screamId) this.setState({ idParam: screamId });
     this.props.getUserData(handle);
     // To get user details (bio/website etc):
     axios
@@ -29,15 +32,22 @@ class user extends Component {
   }
   render() {
     const { posts, loading } = this.props.data;
+    const { handle, screamId } = this.props.match.params;
+    const { idParam } = this.state;
 
     const markUp = loading ? (
       <p>Loading data...</p>
     ) : posts === null ? (
       <p>No posts from this user</p>
-    ) : (
+    ) : !idParam ? (
       posts.map(post => <Post key={post.screamId} post={post} />)
+    ) : (
+      posts.map(post => {
+        if (post.screamId !== idParam)
+          return <Post key={post.screamId} post={post} />;
+        else return <Post key={post.screamId} post={post} openDialog />;
+      })
     );
-
     return (
       <Grid container spacing={8}>
         <Grid item sm={8} xs={12}>
