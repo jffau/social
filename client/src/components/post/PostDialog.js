@@ -47,13 +47,20 @@ const styles = theme => ({
 
 class PostDialog extends Component {
   state = {
-    open: false
+    open: false,
+    oldPath: '',
+    newPath: ''
   };
   handleOpen = () => {
-    this.setState({ open: true });
+    let oldPath = window.location.pathname;
+    const { userHandle, screamId } = this.props;
+    const newPath = `/users/${userHandle}/post/${screamId}`;
+    window.history.pushState(null, null, newPath);
+    this.setState({ open: true, oldPath, newPath });
     this.props.getPost(this.props.screamId);
   };
   handleClose = () => {
+    window.history.pushState(null, null, this.state.oldPath);
     this.setState({ open: false });
     this.props.clearErrors();
   };
