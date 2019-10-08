@@ -55,6 +55,8 @@ class PostDialog extends Component {
     let oldPath = window.location.pathname;
     const { userHandle, screamId } = this.props;
     const newPath = `/users/${userHandle}/post/${screamId}`;
+    // edge case where old path comes from another url
+    if (oldPath === newPath) oldPath = `/users/${userHandle}`;
     window.history.pushState(null, null, newPath);
     this.setState({ open: true, oldPath, newPath });
     this.props.getPost(this.props.screamId);
