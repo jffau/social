@@ -39,7 +39,7 @@ exports.postOneScream = (req, res) => {
       res.json(resScream);
     })
     .catch(err => {
-      response.status(500).json({ error: `Something went wrong` });
+      res.status(500).json({ error: `Something went wrong` });
       console.error(err);
     });
 };
