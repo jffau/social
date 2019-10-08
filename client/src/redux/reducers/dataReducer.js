@@ -63,9 +63,9 @@ export default function(state = initialState, action) {
     case SUBMIT_COMMENT:
       return {
         ...state,
-        posts: {
-          ...state.posts,
-          comments: [action.payload, ...state.posts.comments]
+        post: {
+          ...state.post,
+          comments: [action.payload, ...state.post.comments]
         }
       };
     case SET_POST:
