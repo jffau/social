@@ -4,7 +4,8 @@ import {
   CLEAR_ERRORS,
   LOADING_UI,
   LOADING_USER,
-  SET_UNAUTHENTICATED
+  SET_UNAUTHENTICATED,
+  MARK_NOTIFICATIONS_READ
 } from '../types';
 import axios from 'axios';
 
@@ -101,4 +102,18 @@ export const logoutUser = () => dispatch => {
   localStorage.removeItem('FBIdToken');
   delete axios.defaults.headers.common['Authorization'];
   dispatch({ type: SET_UNAUTHENTICATED });
+};
+
+export const markNotificationsRead = notificationIds => dispatch => {
+  axios
+    .post(
+      'https://us-central1-socialape-8fb19.cloudfunctions.net/api/notifications',
+      notificationIds
+    )
+    .then(res => {
+      dispatch({
+        type: MARK_NOTIFICATIONS_READ
+      });
+    })
+    .catch(err => console.log(err));
 };
