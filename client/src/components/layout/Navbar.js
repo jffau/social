@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MyButton from '../../util/MyButton';
 import CreatePost from '../post/CreatePost';
+import Notifications from './Notifications';
+
 // Redux
 import { connect } from 'react-redux';
 import { logoutUser } from '../../redux/actions/userActions';
@@ -35,9 +37,7 @@ export class Navbar extends Component {
                   <HomeIcon />
                 </MyButton>
               </Link>
-              <MyButton tip="Notifications">
-                <NotificationsIcon />
-              </MyButton>
+              <Notifications />
               <MyButton tip="Logout" onClick={this.handleLogout}>
                 <KeyboardReturn color="primary" />
               </MyButton>
