@@ -26,44 +26,54 @@ class Comments extends Component {
     const { comments, classes } = this.props;
     return (
       <Grid container>
-        {comments.map((comment, index) => {
-          const { body, createdAt, userImage, userHandle } = comment;
-          return (
-            <Fragment key={createdAt}>
-              <Grid item sm={12}>
-                <Grid container>
-                  <Grid item sm={2}>
-                    <img
-                      src={userImage}
-                      alt="comment"
-                      className={classes.commentImage}
-                    />
-                  </Grid>
-                  <Grid item sm={9}>
-                    <div className={classes.commentData}>
-                      <Typography
-                        variant="h5"
-                        component={Link}
-                        to={`/users/${userHandle}`}
-                        color="primary"
-                      >
-                        {userHandle}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
-                      </Typography>
-                      <hr className={classes.invisibleSeparator} />
-                      <Typography variabnt="body1">{body}</Typography>
-                    </div>
+        {comments.length > 0 ? (
+          comments.map((comment, index) => {
+            const { body, createdAt, userImage, userHandle } = comment;
+            return (
+              <Fragment key={createdAt}>
+                <Grid item sm={12}>
+                  <Grid container>
+                    <Grid item sm={2}>
+                      <img
+                        src={userImage}
+                        alt="comment"
+                        className={classes.commentImage}
+                      />
+                    </Grid>
+                    <Grid item sm={9}>
+                      <div className={classes.commentData}>
+                        <Typography
+                          variant="h5"
+                          component={Link}
+                          to={`/users/${userHandle}`}
+                          color="primary"
+                        >
+                          {userHandle}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                        </Typography>
+                        <hr className={classes.invisibleSeparator} />
+                        <Typography variant="body1">{body}</Typography>
+                      </div>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              {index !== comments.length - 1 && (
-                <hr className={classes.visibleSeparator} />
-              )}
-            </Fragment>
-          );
-        })}
+                {index !== comments.length - 1 && (
+                  <hr className={classes.visibleSeparator} />
+                )}
+              </Fragment>
+            );
+          })
+        ) : (
+          <Grid container>
+            <Grid item sm={12}>
+              <Typography variant="body1" align="center" gutterBottom>
+                This post currently does not have any comments.
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     );
   }
