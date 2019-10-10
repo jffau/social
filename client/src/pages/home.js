@@ -4,10 +4,19 @@ import PropTypes from 'prop-types';
 
 import Post from '../components/post/Post';
 import Profile from '../components/profile/Profile';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 // redux
 import { connect } from 'react-redux';
 import { getPosts } from '../redux/actions/dataActions';
+import PostSkeleton from '../util/PostSkeleton';
+
+const styles = theme => ({
+  ...theme.options,
+  container: {
+    direction: 'column-reverse'
+  }
+});
 export class Home extends Component {
   state = {
     posts: null
@@ -22,15 +31,15 @@ export class Home extends Component {
     let recentPostsMarkup = !loading ? (
       posts.map(post => <Post key={post.screamId} post={post} />)
     ) : (
-      <p>Loading...</p>
+      <PostSkeleton />
     );
     return (
-      <Grid container spacing={8}>
-        <Grid item sm={8} xs={12}>
-          {recentPostsMarkup}
-        </Grid>
+      <Grid container spacing={8} className="classes.container">
         <Grid item sm={4} xs={12}>
           <Profile />
+        </Grid>
+        <Grid item sm={8} xs={12}>
+          {recentPostsMarkup}
         </Grid>
       </Grid>
     );
@@ -50,4 +59,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPosts }
-)(Home);
+)(withStyles(styles)(Home));
