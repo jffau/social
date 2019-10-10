@@ -5,6 +5,10 @@ import Post from '../components/post/Post';
 import StaticProfile from '../components/profile/StaticProfile';
 import Grid from '@material-ui/core/Grid';
 
+// skeletons:
+import PostSkeleton from '../util/PostSkeleton';
+import ProfileSkeleton from '../util/ProfielSkeleton';
+
 import { connect } from 'react-redux';
 import { getUserData } from '../redux/actions/dataActions';
 
@@ -32,11 +36,10 @@ class user extends Component {
   }
   render() {
     const { posts, loading } = this.props.data;
-    const { handle, screamId } = this.props.match.params;
     const { idParam } = this.state;
 
     const markUp = loading ? (
-      <p>Loading data...</p>
+      <PostSkeleton />
     ) : posts === null ? (
       <p>No posts from this user</p>
     ) : !idParam ? (
@@ -50,15 +53,15 @@ class user extends Component {
     );
     return (
       <Grid container spacing={8}>
-        <Grid item sm={8} xs={12}>
-          {markUp}
-        </Grid>
         <Grid item sm={4} xs={12}>
           {this.state.profile === null ? (
-            <p>Loading profile...</p>
+            <ProfileSkeleton />
           ) : (
             <StaticProfile profile={this.state.profile} />
           )}
+        </Grid>
+        <Grid item sm={8} xs={12}>
+          {markUp}
         </Grid>
       </Grid>
     );
